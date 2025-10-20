@@ -1,4 +1,5 @@
 import os
+import telebot
 import re
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
@@ -11,7 +12,7 @@ TARGET_CHAT = os.getenv("TARGET_CHAT")  # 群B用户名，如 @target_group
 bot = Bot(token=TOKEN, parse_mode="Markdown")
 dp = Dispatcher(bot)
 
-@dp.message_handler()
+@dp.message_handler(commands=["rank"])
 async def handle_message(message: types.Message):
     # 确保是来自源群的消息
     if message.chat.username == SOURCE_CHAT.replace("@", ""):
@@ -26,3 +27,10 @@ async def handle_message(message: types.Message):
 if __name__ == "__main__":
     print("✅ Bot is running...")
     executor.start_polling(dp, skip_updates=True)
+
+
+
+def start_bot():
+    print("Bot 已启动...")
+    # 使用 infinity_polling 保持 Bot 持续运行
+    bot.infinity_polling()
